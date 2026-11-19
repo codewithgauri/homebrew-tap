@@ -7,14 +7,13 @@ cask "sidekik" do
   desc "Use an Android tablet as a second screen, over USB or Wi-Fi"
   homepage "https://codeymon.com/download/sidekik/"
 
-  depends_on macos: ">= :sonoma"
+  depends_on macos: :sonoma
 
   app "Sidekik.app"
 
   # Sidekik is signed but not yet notarized; clear the download flag so Gatekeeper does not block it.
-  postflight do
-    system_command "/usr/bin/xattr",
-                   args: ["-dr", "com.apple.quarantine", "#{appdir}/Sidekik.app"]
+  postflight_steps do
+    run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "{{appdir}}/Sidekik.app"]
   end
 
   uninstall quit: "com.screenmachine.mac"
